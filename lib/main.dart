@@ -4,23 +4,34 @@ import 'package:bubble_bottom_bar/bubble_bottom_bar.dart';
 void main() => runApp(MyApp());
 
 class MyApp extends StatelessWidget {
-  // This widget is the root of your application.
+  static const MaterialColor white = const MaterialColor(
+    0xFFFFFFFF,
+    const <int, Color>{
+      50: const Color(0xFFFFFFFF),
+      100: const Color(0xFFFFFFFF),
+      200: const Color(0xFFFFFFFF),
+      300: const Color(0xFFFFFFFF),
+      400: const Color(0xFFFFFFFF),
+      500: const Color(0xFFFFFFFF),
+      600: const Color(0xFFFFFFFF),
+      700: const Color(0xFFFFFFFF),
+      800: const Color(0xFFFFFFFF),
+      900: const Color(0xFFFFFFFF),
+    },
+  );
+
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Bubble Bottom Bar Demo',
       theme: ThemeData(
-        primarySwatch: Colors.blue,
+        primarySwatch: white,
       ),
-      home: MyHomePage(title: 'Bubble Bottom Bar Demo'),
+      home: MyHomePage(),
     );
   }
 }
 
 class MyHomePage extends StatefulWidget {
-  MyHomePage({Key key, this.title}) : super(key: key);
-  final String title;
-
   @override
   _MyHomePageState createState() => _MyHomePageState();
 }
@@ -57,9 +68,22 @@ class _MyHomePageState extends State<MyHomePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Center(
+      body: SafeArea(
         child: Container(
-          child: TabBarDemo(),
+          child: Column(
+            children: <Widget>[
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: <Widget>[
+                  Icon(Icons.search),
+                  Icon(Icons.notifications),
+                ],
+              ),
+              Expanded(
+                child: TabBarDemo(),
+              ),
+            ],
+          ),
         ),
       ),
       bottomNavigationBar: BottomNavigationBar(
@@ -91,33 +115,161 @@ class _MyHomePageState extends State<MyHomePage> {
   }
 }
 
-class TabBarDemo extends StatelessWidget {
+class TabBarDemo extends StatefulWidget {
+  @override
+  _TabBarDemoState createState() => _TabBarDemoState();
+}
+
+class _TabBarDemoState extends State<TabBarDemo> {
+  List<Tab> _listTab = <Tab>[
+    Tab(
+      child: Row(
+        children: <Widget>[
+          Text('All'),
+          SizedBox(width: 10),
+          Container(
+            decoration: BoxDecoration(
+                shape: BoxShape.circle,
+                border: Border.all(color: Colors.white70)),
+            child: Text(
+              '9',
+              style: TextStyle(backgroundColor: Colors.white10),
+            ),
+          ),
+        ],
+      ),
+    ),
+    Tab(icon: Icon(Icons.directions_transit)),
+    Tab(icon: Icon(Icons.directions_bike)),
+  ];
+
   @override
   Widget build(BuildContext context) {
     return DefaultTabController(
       length: 3,
       child: Scaffold(
         appBar: AppBar(
-          actions: <Widget>[
-            Icon(Icons.search),
-            Icon(Icons.notifications),
-          ],
+          actions: <Widget>[Icon(Icons.settings)],
           bottom: TabBar(
             tabs: [
               Tab(
-                icon: Icon(Icons.directions_car),
-
+                child: Row(
+                  children: <Widget>[
+                    Text('All'),
+                    SizedBox(width: 5),
+                    Container(
+                      height: 18,
+                      width: 20,
+                      alignment: Alignment.center,
+                      decoration: BoxDecoration(
+                        shape: BoxShape.rectangle,
+                        borderRadius: BorderRadius.circular(7),
+                        color: Colors.black.withOpacity(0.1),
+                      ),
+                      child: Text(
+                        '9',
+                        style: TextStyle(
+                            backgroundColor: Colors.white10, fontSize: 12),
+                      ),
+                    ),
+                  ],
+                ),
               ),
-              Tab(icon: Icon(Icons.directions_transit)),
-              Tab(icon: Icon(Icons.directions_bike)),
+              Tab(
+                child: Row(
+                  children: <Widget>[
+                    Icon(Icons.inbox),
+                    SizedBox(width: 5),
+                    Text('Fridge'),
+                    SizedBox(width: 5),
+                    Container(
+                      height: 18,
+                      width: 20,
+                      alignment: Alignment.center,
+                      decoration: BoxDecoration(
+                        shape: BoxShape.rectangle,
+                        borderRadius: BorderRadius.circular(7),
+                        color: Colors.black.withOpacity(0.1),
+                      ),
+                      child: Text(
+                        '10',
+                        style: TextStyle(
+                            backgroundColor: Colors.white10, fontSize: 12),
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+              Tab(
+                child: Row(
+                  children: <Widget>[
+                    Icon(Icons.ac_unit),
+                    SizedBox(width: 5),
+                    Text('Freezer'),
+                    SizedBox(width: 5),
+                    Container(
+                      height: 18,
+                      width: 20,
+                      alignment: Alignment.center,
+                      decoration: BoxDecoration(
+                        shape: BoxShape.rectangle,
+                        borderRadius: BorderRadius.circular(7),
+                        color: Colors.black.withOpacity(0.1),
+                      ),
+                      child: Text(
+                        '3',
+                        style: TextStyle(
+                            backgroundColor: Colors.white10, fontSize: 12),
+                      ),
+                    ),
+                  ],
+                ),
+              ),
             ],
+            labelColor: Colors.green,
+            unselectedLabelColor: Colors.black87,
           ),
           title: Text('Pantry'),
-
         ),
         body: TabBarView(
           children: [
-            Icon(Icons.directions_car),
+            ListView(
+              children: <Widget>[
+                Container(
+                  padding: EdgeInsets.all(10),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    children: <Widget>[
+                      Icon(Icons.restaurant_menu),
+                      SizedBox(width: 50),
+                      Column(
+                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                        children: <Widget>[
+                          Text('Beef rib-eye steak'),
+                          Text('Exporing in 2 days!'),
+                        ],
+                      ),
+                      Spacer(),
+                      Column(
+                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                        children: <Widget>[
+                          Text('300 g'),
+                          Text('Fridge'),
+                        ],
+                      ),
+                    ],
+                  ),
+                ),
+                ListTile(
+                  leading: Icon(Icons.photo_album),
+                  title: Text('Album'),
+                ),
+                ListTile(
+                  leading: Icon(Icons.phone),
+                  title: Text('Phone'),
+                ),
+              ],
+            ),
             Icon(Icons.directions_transit),
             Icon(Icons.directions_bike),
           ],
