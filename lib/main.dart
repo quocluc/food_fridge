@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:bubble_bottom_bar/bubble_bottom_bar.dart';
+import 'package:foodfridge/detail.dart';
 
 void main() => runApp(MyApp());
 
@@ -23,10 +23,11 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      theme: ThemeData(
-        primarySwatch: white,
-      ),
-      home: MyHomePage(),
+      theme: ThemeData(primarySwatch: white, fontFamily: 'BalooTammudu'),
+      routes: {
+        '/': (context) => MyHomePage(),
+        '/detail': (context) => Detail(),
+      },
     );
   }
 }
@@ -38,32 +39,6 @@ class MyHomePage extends StatefulWidget {
 
 class _MyHomePageState extends State<MyHomePage> {
   int _selectedIndex = 0;
-  static const TextStyle optionStyle =
-      TextStyle(fontSize: 30, fontWeight: FontWeight.bold);
-  static const List<Widget> _widgetOptions = <Widget>[
-    Text(
-      'Index 0: Home',
-      style: optionStyle,
-    ),
-    Text(
-      'Index 1: Business',
-      style: optionStyle,
-    ),
-    Text(
-      'Index 2: School',
-      style: optionStyle,
-    ),
-    Text(
-      'Index 3: Setting',
-      style: optionStyle,
-    ),
-  ];
-
-  void _onItemTapped(int index) {
-    setState(() {
-      _selectedIndex = index;
-    });
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -80,47 +55,102 @@ class _MyHomePageState extends State<MyHomePage> {
                 ],
               ),
               Expanded(
-                child: TabBarDemo(),
+                child: TabBarPantry(),
               ),
             ],
           ),
         ),
       ),
-      bottomNavigationBar: BottomNavigationBar(
-        items: const <BottomNavigationBarItem>[
-          BottomNavigationBarItem(
-            icon: Icon(Icons.view_list),
-            title: Text('Pantry'),
+      bottomNavigationBar: BottomAppBar(
+        child: Container(
+          margin: EdgeInsets.only(left: 12.0, right: 12.0),
+          child: Row(
+            mainAxisSize: MainAxisSize.max,
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: <Widget>[
+              IconButton(
+                onPressed: () {
+                  setState(() {
+                    _selectedIndex = 0;
+                  });
+                },
+                iconSize: 27.0,
+                icon: ImageIcon(
+                  new AssetImage("assets/icons/pantry.png"),
+                  color: _selectedIndex == 0 ? Colors.green : null,
+                  size: 30,
+                ),
+              ),
+              IconButton(
+                onPressed: () {
+                  setState(() {
+                    _selectedIndex = 1;
+                  });
+                },
+                iconSize: 27.0,
+                icon: ImageIcon(
+                  new AssetImage("assets/icons/recipes.png"),
+                  color: _selectedIndex == 1 ? Colors.green : null,
+                  size: 30,
+                ),
+              ),
+              //to leave space in between the bottom app bar items and below the FAB
+              SizedBox(
+                width: 50.0,
+              ),
+              IconButton(
+                onPressed: () {
+                  setState(() {
+                    _selectedIndex = 2;
+                  });
+                },
+                iconSize: 27.0,
+                icon: ImageIcon(
+                  new AssetImage("assets/icons/shop.png"),
+                  color: _selectedIndex == 2 ? Colors.green : null,
+                  size: 30,
+                ),
+              ),
+              IconButton(
+                onPressed: () {
+                  setState(() {
+                    _selectedIndex = 3;
+                  });
+                },
+                iconSize: 27.0,
+                icon: Icon(
+                  Icons.settings,
+                ),
+              ),
+            ],
           ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.receipt),
-            title: Text('Recipes'),
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.shopping_cart),
-            title: Text('Shopping list'),
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.settings),
-            title: Text('Setting'),
-          ),
-        ],
-        currentIndex: _selectedIndex,
-        selectedItemColor: Color.fromRGBO(30, 202, 120, 100),
-        onTap: _onItemTapped,
-        backgroundColor: Colors.white,
-        unselectedItemColor: Colors.black26,
+        ),
+        shape: CircularNotchedRectangle(),
+        color: Colors.white,
+      ),
+      floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
+      //specify the location of the FAB
+      floatingActionButton: FloatingActionButton(
+        onPressed: () {
+          setState(() {});
+        },
+        tooltip: "Centre FAB",
+        child: Container(
+          margin: EdgeInsets.all(15.0),
+          child: Icon(Icons.add),
+        ),
+        elevation: 4.0,
       ),
     );
   }
 }
 
-class TabBarDemo extends StatefulWidget {
+class TabBarPantry extends StatefulWidget {
   @override
-  _TabBarDemoState createState() => _TabBarDemoState();
+  _TabBarPantryState createState() => _TabBarPantryState();
 }
 
-class _TabBarDemoState extends State<TabBarDemo> {
+class _TabBarPantryState extends State<TabBarPantry> {
   List<Tab> _listTab = <Tab>[
     Tab(
       child: Row(
@@ -149,17 +179,22 @@ class _TabBarDemoState extends State<TabBarDemo> {
       length: 3,
       child: Scaffold(
         appBar: AppBar(
+          title: Text('Pantry'),
           actions: <Widget>[Icon(Icons.settings)],
           bottom: TabBar(
             tabs: [
               Tab(
                 child: Row(
+                  mainAxisAlignment: MainAxisAlignment.start,
                   children: <Widget>[
-                    Text('All'),
+                    Padding(
+                      padding: const EdgeInsets.only(top: 8.0),
+                      child: Text('All'),
+                    ),
                     SizedBox(width: 5),
                     Container(
-                      height: 18,
-                      width: 20,
+                      height: 19,
+                      width: 25,
                       alignment: Alignment.center,
                       decoration: BoxDecoration(
                         shape: BoxShape.rectangle,
@@ -180,7 +215,10 @@ class _TabBarDemoState extends State<TabBarDemo> {
                   children: <Widget>[
                     Icon(Icons.inbox),
                     SizedBox(width: 5),
-                    Text('Fridge'),
+                    Padding(
+                      padding: const EdgeInsets.only(top: 8.0),
+                      child: Text('Fridge'),
+                    ),
                     SizedBox(width: 5),
                     Container(
                       height: 18,
@@ -227,53 +265,85 @@ class _TabBarDemoState extends State<TabBarDemo> {
               ),
             ],
             labelColor: Colors.green,
-            unselectedLabelColor: Colors.black87,
+            unselectedLabelColor: Colors.black54,
           ),
-          title: Text('Pantry'),
         ),
         body: TabBarView(
           children: [
-            ListView(
-              children: <Widget>[
-                Container(
-                  padding: EdgeInsets.all(10),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.start,
-                    children: <Widget>[
-                      Icon(Icons.restaurant_menu),
-                      SizedBox(width: 50),
-                      Column(
-                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                        children: <Widget>[
-                          Text('Beef rib-eye steak'),
-                          Text('Exporing in 2 days!'),
-                        ],
-                      ),
-                      Spacer(),
-                      Column(
-                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                        children: <Widget>[
-                          Text('300 g'),
-                          Text('Fridge'),
-                        ],
-                      ),
-                    ],
+            ListView.separated(
+              padding: EdgeInsets.all(10),
+              itemCount: 30,
+              separatorBuilder: (context, _) {
+                return SizedBox(
+                  height: 10,
+                );
+              },
+              itemBuilder: (context, index) {
+                return InkWell(
+                  onTap: () {
+                    Navigator.pushNamed(context, '/detail');
+                  },
+                  child: Container(
+                    padding: EdgeInsets.all(10),
+                    decoration: BoxDecoration(
+                      color: Colors.white,
+                      borderRadius: BorderRadius.circular(12),
+                      boxShadow: [
+                        BoxShadow(
+                          color: Colors.black12,
+                          offset: Offset(1.0, 1.0),
+                          blurRadius: 12.0,
+                          spreadRadius: 5.0,
+                        )
+                      ],
+                    ),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      children: <Widget>[
+                        Image.asset(
+                          'assets/icons/meat.png',
+                          width: 40,
+                        ),
+                        SizedBox(width: 30),
+                        Column(
+                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: <Widget>[
+                            Text(
+                              'Beef rib-eye steak',
+                              style: TextStyle(
+                                color: Colors.black,
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
+                            Text(
+                              'Exporing in 2 days!',
+                              style: TextStyle(color: Colors.orange),
+                            ),
+                          ],
+                        ),
+                        Spacer(),
+                        Column(
+                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                          children: <Widget>[
+                            Text('300 g'),
+                            Text(
+                              'Fridge',
+                              style: TextStyle(color: Colors.black26),
+                            ),
+                          ],
+                        ),
+                      ],
+                    ),
                   ),
-                ),
-                ListTile(
-                  leading: Icon(Icons.photo_album),
-                  title: Text('Album'),
-                ),
-                ListTile(
-                  leading: Icon(Icons.phone),
-                  title: Text('Phone'),
-                ),
-              ],
+                );
+              },
             ),
             Icon(Icons.directions_transit),
             Icon(Icons.directions_bike),
           ],
         ),
+        backgroundColor: Colors.grey.withOpacity(0.15),
       ),
     );
   }
